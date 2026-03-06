@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tokim Exchange — Tokenized Kenyan Treasury Bills</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --teal:       #0B6B6B;
+      --teal-mid:   #0E8585;
+      --teal-light: #E8F4F4;
+      --teal-dim:   #D0EBEB;
+      --gold:       #B8892A;
+      --gold-light: #F7F0E3;
+      --ink:        #0a0f1a;
+      --ink-mid:    #1a2332;
+      --ink-light:  #4a5568;
+      --rule:       #2d3748;
+      --bg:         #0a0f1a;
+      --white:      #FFFFFF;
+      --nav-h:      72px;
+      --xrp-blue:   #23292F;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--white);
+      font-size: 16px;
+      line-height: 1.7;
+    }
+
+    /* ── SCROLLBAR ── */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--teal-mid); border-radius: 2px; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      height: var(--nav-h);
+      background: rgba(10,15,26,0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--rule);
+      display: flex; align-items: center;
+    }
+    .nav-inner {
+      max-width: 1200px; margin: 0 auto; width: 100%;
+      padding: 0 48px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .logo {
+      display: flex; align-items: baseline; gap: 6px;
+      text-decoration: none;
+    }
+    .logo-word {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px; font-weight: 700;
+      color: var(--teal); letter-spacing: -0.5px;
+    }
+    .logo-tag {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px; color: var(--gold);
+      letter-spacing: 1.5px; text-transform: uppercase;
+      padding: 2px 6px; border: 1px solid var(--gold);
+      border-radius: 2px;
+    }
+    .nav-links { display: flex; gap: 36px; align-items: center; }
+    .nav-links a {
+      text-decoration: none;
+      font-size: 14px; font-weight: 500;
+      color: rgba(255,255,255,0.7);
+      letter-spacing: 0.2px;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--teal); }
+    .nav-cta {
+      background: var(--teal) !important;
+      color: var(--white) !important;
+      padding: 9px 22px !important;
+      border-radius: 3px;
+      font-size: 13px !important;
+      font-weight: 500 !important;
+      transition: background 0.2s !important;
+    }
+    .nav-cta:hover { background: var(--teal-mid) !important; }
+
+    /* ── HERO ── */
+    #home {
+      min-height: 100vh;
+      padding-top: var(--nav-h);
+      display: flex; align-items: center;
+      position: relative; overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0; z-index: 0;
+      background: 
+        radial-gradient(ellipse at 20% 50%, rgba(11,107,107,0.15) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 50%, rgba(184,137,42,0.1) 0%, transparent 50%),
+        linear-gradient(180deg, var(--bg) 0%, var(--ink-mid) 100%);
+    }
+    .hero-grid {
+      position: absolute; inset: 0; z-index: 0;
+      background-image:
+        linear-gradient(rgba(45,55,72,0.3) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(45,55,72,0.3) 1px, transparent 1px);
+      background-size: 60px 60px;
+      opacity: 0.5;
+    }
+    .hero-inner {
+      max-width: 1200px; margin: 0 auto; width: 100%;
+      padding: 80px 48px;
+      position: relative; z-index: 1;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
+    }
+    .hero-eyebrow {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--gold);
+      display: flex; align-items: center; gap: 12px;
+      margin-bottom: 24px;
+    }
+    .hero-eyebrow::before {
+      content: '';
+      display: inline-block; width: 32px; height: 1px;
+      background: var(--gold);
+    }
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(38px, 4.5vw, 56px);
+      font-weight: 700; line-height: 1.1;
+      letter-spacing: -1px;
+      color: var(--white);
+      margin-bottom: 24px;
+    }
+    h1 em {
+      font-style: normal; color: var(--teal);
+    }
+    .hero-sub {
+      font-size: 17px; color: rgba(255,255,255,0.7); line-height: 1.75;
+      max-width: 480px; margin-bottom: 40px;
+    }
+    .hero-actions {
+      display: flex; gap: 16px; flex-wrap: wrap;
+    }
+    .btn-primary {
+      background: var(--teal);
+      color: var(--white);
+      padding: 14px 30px;
+      border-radius: 3px;
+      text-decoration: none;
+      font-size: 14px; font-weight: 500;
+      letter-spacing: 0.3px;
+      transition: background 0.2s, transform 0.2s;
+      display: inline-block;
+      border: none;
+      cursor: pointer;
+    }
+    .btn-primary:hover { background: var(--teal-mid); transform: translateY(-1px); }
+    .btn-ghost {
+      border: 1.5px solid var(--teal);
+      color: var(--teal);
+      padding: 13px 28px;
+      border-radius: 3px;
+      text-decoration: none;
+      font-size: 14px; font-weight: 500;
+      transition: all 0.2s;
+      display: inline-block;
+      background: transparent;
+      cursor: pointer;
+    }
+    .btn-ghost:hover { background: var(--teal); color: white; transform: translateY(-1px); }
+
+    /* Hero right — live rates card */
+    .hero-card {
+      background: rgba(26,35,50,0.6);
+      border: 1px solid var(--rule);
+      border-radius: 8px;
+      padding: 40px;
+      backdrop-filter: blur(10px);
+    }
+    .hero-card-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 28px;
+    }
+    .rate-row {
+      display: flex; justify-content: space-between;
+      align-items: center;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--rule);
+    }
+    .rate-row:last-child { border-bottom: none; }
+    .rate-tenor {
+      font-size: 14px; color: rgba(255,255,255,0.7);
+    }
+    .rate-value {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px; font-weight: 700;
+      color: var(--teal);
+    }
+    .rate-apr {
+      font-size: 11px; color: var(--gold);
+      font-family: 'DM Mono', monospace;
+    }
+    .xrp-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--xrp-blue);
+      color: white;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-family: 'DM Mono', monospace;
+      margin-top: 24px;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    /* ── TICKER ── */
+    .ticker {
+      background: var(--teal);
+      height: 40px; overflow: hidden;
+      display: flex; align-items: center;
+    }
+    .ticker-track {
+      display: flex; gap: 0;
+      animation: ticker 28s linear infinite;
+      white-space: nowrap;
+    }
+    .ticker-item {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px; letter-spacing: 1.5px;
+      color: rgba(255,255,255,0.75);
+      padding: 0 40px;
+      text-transform: uppercase;
+    }
+    .ticker-item span { color: rgba(255,255,255,0.4); margin: 0 12px; }
+
+    /* ── SECTION COMMON ── */
+    section { scroll-margin-top: var(--nav-h); }
+    .section-wrap { max-width: 1200px; margin: 0 auto; padding: 100px 48px; }
+    .section-eyebrow {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px; letter-spacing: 2.5px;
+      text-transform: uppercase; color: var(--gold);
+      margin-bottom: 16px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .section-eyebrow::before {
+      content: ''; width: 24px; height: 1px; background: var(--gold);
+    }
+    h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(28px, 3vw, 40px);
+      font-weight: 700; line-height: 1.2;
+      letter-spacing: -0.5px;
+      color: var(--white);
+      margin-bottom: 16px;
+    }
+    .section-sub {
+      font-size: 16px; color: rgba(255,255,255,0.6);
+      max-width: 560px; line-height: 1.75;
+    }
+    .section-header { margin-bottom: 56px; }
+
+    /* ── HOW IT WORKS ── */
+    #how { background: var(--ink-mid); }
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+    }
+    .step-card {
+      background: rgba(10,15,26,0.4);
+      border: 1px solid var(--rule);
+      border-radius: 8px;
+      padding: 32px;
+      position: relative;
+    }
+    .step-num {
+      position: absolute;
+      top: -12px;
+      left: 24px;
+      background: var(--teal);
+      color: white;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .step-icon {
+      font-size: 32px;
+      margin-bottom: 16px;
+      margin-top: 8px;
+    }
+    .step-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: 8px;
+    }
+    .step-desc {
+      font-size: 13px;
+      color: rgba(255,255,255,0.6);
+      line-height: 1.6;
+    }
+
+    /* ── DEMO ── */
+    #demo { background: var(--bg); }
+    .demo-layout {
+      display: grid; grid-template-columns: 1fr 1.5fr; gap: 60px; align-items: start;
+    }
+    .demo-left h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px; font-weight: 700; color: var(--white); margin-bottom: 16px;
+    }
+    .demo-left p {
+      font-size: 15px; color: rgba(255,255,255,0.6); line-height: 1.8; margin-bottom: 24px;
+    }
+    .demo-features { display: flex; flex-direction: column; gap: 0; margin-bottom: 32px; }
+    .demo-feature {
+      display: flex; align-items: flex-start; gap: 14px;
+      padding: 14px 0; border-bottom: 1px solid var(--rule);
+    }
+    .demo-feature:first-child { border-top: 1px solid var(--rule); }
+    .feat-check {
+      width: 22px; height: 22px; border-radius: 50%;
+      background: rgba(11,107,107,0.3);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; flex-shrink: 0; margin-top: 2px; color: var(--teal);
+      border: 1px solid var(--teal);
+    }
+    .feat-text { font-size: 14px; color: rgba(255,255,255,0.7); line-height: 1.5; }
+    .feat-text strong { color: var(--white); font-weight: 600; }
+
+    /* Interactive Demo Panel */
+    .demo-panel {
+      background: rgba(26,35,50,0.6);
+      border: 1px solid var(--rule);
+      border-radius: 12px;
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+    }
+    .demo-panel-header {
+      background: var(--xrp-blue);
+      padding: 16px 24px;
+      display: flex; align-items: center; gap: 12px;
+      border-bottom: 1px solid var(--rule);
+    }
+    .demo-panel-title {
+      color: white;
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+      letter-spacing: 1px;
+    }
+    .status-dot {
+      width: 8px; height: 8px;
+      background: #28CA41;
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+    .demo-panel-body {
+      padding: 32px;
+    }
+
+    /* Token Selector */
+    .token-tabs {
+      display: flex; gap: 8px;
+      margin-bottom: 24px;
+    }
+    .token-tab {
+      flex: 1;
+      padding: 12px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--rule);
+      border-radius: 6px;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s;
+    }
+    .token-tab:hover {
+      background: rgba(11,107,107,0.2);
+      border-color: var(--teal);
+    }
+    .token-tab.active {
+      background: var(--teal);
+      border-color: var(--teal);
+    }
+    .token-tab-tenor {
+      font-size: 12px;
+      color: rgba(255,255,255,0.6);
+      margin-bottom: 4px;
+    }
+    .token-tab.active .token-tab-tenor { color: rgba(255,255,255,0.8); }
+    .token-tab-rate {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--white);
+    }
+    .token-tab-apr {
+      font-size: 10px;
+      color: var(--gold);
+      font-family: 'DM Mono', monospace;
+    }
+
+    /* Swap Interface */
+    .swap-section {
+      margin-bottom: 24px;
+    }
+    .swap-label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 12px;
+    }
+    .swap-input-group {
+      background: rgba(10,15,26,0.6);
+      border: 1.5px solid var(--rule);
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+    .swap-input-header {
+      display: flex; justify-content: space-between;
+      font-size: 12px;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 8px;
+    }
+    .swap-input {
+      display: flex; align-items: center; gap: 12px;
+    }
+    .swap-input input {
+      flex: 1;
+      border: none;
+      font-size: 28px;
+      font-weight: 600;
+      color: var(--white);
+      outline: none;
+      background: transparent;
+    }
+    .swap-input input::placeholder { color: rgba(255,255,255,0.3); }
+    .swap-token {
+      display: flex; align-items: center; gap: 8px;
+      background: rgba(11,107,107,0.2);
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--teal);
+      border: 1px solid var(--teal);
+    }
+    .swap-arrow {
+      text-align: center;
+      margin: 8px 0;
+      color: var(--gold);
+      font-size: 20px;
+    }
+    .swap-details {
+      background: rgba(11,107,107,0.1);
+      border-radius: 8px;
+      padding: 16px;
+      margin-top: 16px;
+    }
+    .swap-detail {
+      display: flex; justify-content: space-between;
+      font-size: 13px;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 8px;
+    }
+    .swap-detail:last-child { margin-bottom: 0; }
+    .swap-detail-value {
+      color: var(--white);
+      font-weight: 500;
+    }
+    .swap-btn {
+      width: 100%;
+      background: var(--teal);
+      color: white;
+      border: none;
+      padding: 16px;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 16px;
+      transition: background 0.2s;
+    }
+    .swap-btn:hover { background: var(--teal-mid); }
+    .swap-btn:disabled {
+      background: var(--rule);
+      cursor: not-allowed;
+    }
+
+    /* Yield Calculator */
+    .yield-calc {
+      background: rgba(184,137,42,0.1);
+      border: 1px solid var(--gold);
+      border-radius: 8px;
+      padding: 20px;
+      margin-top: 24px;
+    }
+    .yield-header {
+      display: flex; align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .yield-icon { font-size: 16px; }
+    .yield-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .yield-amount {
+      font-family: 'Playfair Display', serif;
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--white);
+    }
+    .yield-period {
+      font-size: 13px;
+      color: rgba(255,255,255,0.6);
+      margin-top: 4px;
+    }
+
+    /* ── FEATURES ── */
+    #features { background: var(--ink-mid); }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .feature-card {
+      background: rgba(10,15,26,0.4);
+      border: 1px solid var(--rule);
+      border-radius: 8px;
+      padding: 32px;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .feature-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--teal);
+    }
+    .feature-icon {
+      font-size: 36px;
+      margin-bottom: 16px;
+    }
+    .feature-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: 12px;
+    }
+    .feature-desc {
+      font-size: 14px;
+      color: rgba(255,255,255,0.6);
+      line-height: 1.7;
+    }
+
+    /* ── WAITLIST ── */
+    #waitlist { background: var(--bg); }
+    .waitlist-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+    .waitlist-left h2 { margin-bottom: 24px; }
+    .waitlist-left p {
+      color: rgba(255,255,255,0.6);
+      font-size: 16px;
+      line-height: 1.8;
+      margin-bottom: 32px;
+    }
+    .waitlist-stats {
+      display: flex; gap: 40px;
+    }
+    .waitlist-stat {
+      text-align: center;
+    }
+    .waitlist-stat-value {
+      font-family: 'Playfair Display', serif;
+      font-size: 36px;
+      font-weight: 700;
+      color: var(--teal);
+    }
+    .waitlist-stat-label {
+      font-size: 12px;
+      color: rgba(255,255,255,0.5);
+      margin-top: 4px;
+    }
+    .waitlist-form {
+      background: rgba(26,35,50,0.6);
+      border: 1px solid var(--rule);
+      border-radius: 12px;
+      padding: 40px;
+    }
+    .form-row { margin-bottom: 20px; }
+    .form-row label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 8px;
+    }
+    .form-row input, .form-row select {
+      width: 100%;
+      padding: 14px 16px;
+      background: rgba(10,15,26,0.6);
+      border: 1.5px solid var(--rule);
+      border-radius: 6px;
+      color: var(--white);
+      font-size: 15px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .form-row input:focus, .form-row select:focus {
+      border-color: var(--teal);
+    }
+    .form-submit {
+      width: 100%;
+      background: var(--teal);
+      color: white;
+      border: none;
+      padding: 16px;
+      border-radius: 6px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .form-submit:hover { background: var(--teal-mid); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--ink);
+      padding: 48px;
+      border-top: 1px solid var(--rule);
+    }
+    .footer-inner {
+      max-width: 1200px; margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    .footer-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--white);
+    }
+    .footer-logo span { color: var(--teal); }
+    .footer-links {
+      display: flex;
+      gap: 24px;
+    }
+    .footer-links a {
+      font-size: 13px;
+      color: rgba(255,255,255,0.5);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--teal); }
+    .footer-copy {
+      font-size: 12px;
+      color: rgba(255,255,255,0.3);
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes ticker {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .nav-inner { padding: 0 24px; }
+      .nav-links { display: none; }
+      .hero-inner { grid-template-columns: 1fr; gap: 40px; padding: 60px 24px; }
+      .hero-card { order: -1; }
+      .section-wrap { padding: 72px 24px; }
+      .steps-grid { grid-template-columns: 1fr; }
+      .demo-layout { grid-template-columns: 1fr; }
+      .features-grid { grid-template-columns: 1fr; }
+      .waitlist-layout { grid-template-columns: 1fr; }
+      .waitlist-stats { justify-content: center; }
+      .token-tabs { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="#home" class="logo">
+      <span class="logo-word">Tokim Exchange</span>
+      <span class="logo-tag">Beta</span>
+    </a>
+    <div class="nav-links">
+      <a href="#how">How It Works</a>
+      <a href="#demo">Demo</a>
+      <a href="#features">Features</a>
+      <a href="#waitlist" class="nav-cta">Join Waitlist</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="home">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-eyebrow">Kenyan Treasury Bills on XRP Ledger</div>
+      <h1>Earn <em>9.2%</em> on Africa's safest asset class</h1>
+      <p class="hero-sub">
+        Tokenized Kenyan Treasury bills for global investors. No Kenyan bank account required. Instant settlement. 24/7 liquidity.
+      </p>
+      <div class="hero-actions">
+        <a href="#demo" class="btn-primary">Try Live Demo</a>
+        <a href="#how" class="btn-ghost">How It Works</a>
+      </div>
+    </div>
+    <div class="hero-card">
+      <div class="hero-card-label">Live CBK Rates — February 2026</div>
+      <div class="rate-row">
+        <div class="rate-tenor">91-Day Treasury Bill</div>
+        <div>
+          <div class="rate-value">7.63%</div>
+          <div class="rate-apr">APR</div>
+        </div>
+      </div>
+      <div class="rate-row">
+        <div class="rate-tenor">182-Day Treasury Bill</div>
+        <div>
+          <div class="rate-value">7.80%</div>
+          <div class="rate-apr">APR</div>
+        </div>
+      </div>
+      <div class="rate-row">
+        <div class="rate-tenor">364-Day Treasury Bill</div>
+        <div>
+          <div class="rate-value">9.21%</div>
+          <div class="rate-apr">APR</div>
+        </div>
+      </div>
+      <div class="xrp-badge">
+        <span>●</span> Settles in 3-5 seconds on XRP Ledger
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-track">
+    <span class="ticker-item">Tokenized T-Bills <span>◆</span></span>
+    <span class="ticker-item">XRP Ledger Settlement <span>◆</span></span>
+    <span class="ticker-item">9.21% Yield <span>◆</span></span>
+    <span class="ticker-item">No Minimum Investment <span>◆</span></span>
+    <span class="ticker-item">24/7 Liquidity <span>◆</span></span>
+    <span class="ticker-item">CBK Regulated <span>◆</span></span>
+    <span class="ticker-item">Diaspora Access <span>◆</span></span>
+    <span class="ticker-item">Instant Settlement <span>◆</span></span>
+    <!-- duplicate -->
+    <span class="ticker-item">Tokenized T-Bills <span>◆</span></span>
+    <span class="ticker-item">XRP Ledger Settlement <span>◆</span></span>
+    <span class="ticker-item">9.21% Yield <span>◆</span></span>
+    <span class="ticker-item">No Minimum Investment <span>◆</span></span>
+    <span class="ticker-item">24/7 Liquidity <span>◆</span></span>
+    <span class="ticker-item">CBK Regulated <span>◆</span></span>
+    <span class="ticker-item">Diaspora Access <span>◆</span></span>
+    <span class="ticker-item">Instant Settlement <span>◆</span></span>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<section id="how">
+  <div class="section-wrap">
+    <div class="section-eyebrow">Simple Process</div>
+    <h2>From USDC to yield in 4 steps</h2>
+    <p class="section-sub">No Kenyan bank account. No paperwork. No 3-day settlement. Just instant access to Kenya's most secure government securities.</p>
+    
+    <div class="steps-grid" style="margin-top: 48px;">
+      <div class="step-card">
+        <div class="step-num">1</div>
+        <div class="step-icon">👛</div>
+        <div class="step-title">Connect Wallet</div>
+        <div class="step-desc">Link your XRP wallet (Xaman, Toast, or Ledger). No registration required.</div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">2</div>
+        <div class="step-icon">💱</div>
+        <div class="step-title">Deposit USDC</div>
+        <div class="step-desc">Send USDC to your Tokim address. Funds held in audited smart contracts.</div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">3</div>
+        <div class="step-icon">🏛️</div>
+        <div class="step-title">Receive KES_TBILL</div>
+        <div class="step-desc">Tokens represent direct ownership of CBK Treasury bills held by regulated custodians.</div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">4</div>
+        <div class="step-icon">📈</div>
+        <div class="step-title">Earn & Redeem</div>
+        <div class="step-desc">Earn up to 9.21% APR. Trade anytime on XRP Ledger DEX or hold to maturity.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DEMO -->
+<section id="demo">
+  <div class="section-wrap">
+    <div class="section-eyebrow">Live Demo</div>
+    <h2>Experience the future of African RWA</h2>
+    <p class="section-sub">Interactive simulation. Connect your wallet to execute real trades on XRP Ledger Testnet.</p>
+    
+    <div class="demo-layout" style="margin-top: 48px;">
+      <div class="demo-left">
+        <h3>Why Tokenized T-Bills?</h3>
+        <p>Kenyan Treasury bills offer yields 2-3x higher than US T-bills, with the backing of a sovereign government. Until now, they were inaccessible to global investors.</p>
+        
+        <div class="demo-features">
+          <div class="demo-feature">
+            <div class="feat-check">✓</div>
+            <div class="feat-text"><strong>Fractional Ownership</strong> — Invest from $10, not $385 (CBK minimum)</div>
+          </div>
+          <div class="demo-feature">
+            <div class="feat-check">✓</div>
+            <div class="feat-text"><strong>Instant Liquidity</strong> — Trade 24/7 on XRP Ledger DEX</div>
+          </div>
+          <div class="demo-feature">
+            <div class="feat-check">✓</div>
+            <div class="feat-text"><strong>Automated Yield</strong> — Smart contracts distribute interest payments</div>
+          </div>
+          <div class="demo-feature">
+            <div class="feat-check">✓</div>
+            <div class="feat-text"><strong>Real-Time Risk</strong> — Tokim Analytics monitors liquidity 24/7</div>
+          </div>
+        </div>
+        
+        <a href="#waitlist" class="btn-primary">Get Early Access</a>
+      </div>
+
+      <!-- Interactive Demo Panel -->
+      <div class="demo-panel">
+        <div class="demo-panel-header">
+          <div class="status-dot"></div>
+          <span class="demo-panel-title">XRP LEDGER TESTNET — LIVE</span>
+        </div>
+        
+        <div class="demo-panel-body">
+          <!-- Token Selector -->
+          <div class="token-tabs">
+            <div class="token-tab active" onclick="selectTenor(91)">
+              <div class="token-tab-tenor">91-Day</div>
+              <div class="token-tab-rate">7.63%</div>
+              <div class="token-tab-apr">APR</div>
+            </div>
+            <div class="token-tab" onclick="selectTenor(182)">
+              <div class="token-tab-tenor">182-Day</div>
+              <div class="token-tab-rate">7.80%</div>
+              <div class="token-tab-apr">APR</div>
+            </div>
+            <div class="token-tab" onclick="selectTenor(364)">
+              <div class="token-tab-tenor">364-Day</div>
+              <div class="token-tab-rate">9.21%</div>
+              <div class="token-tab-apr">APR</div>
+            </div>
+          </div>
+
+          <!-- Swap Interface -->
+          <div class="swap-section">
+            <div class="swap-label">You Pay</div>
+            <div class="swap-input-group">
+              <div class="swap-input-header">
+                <span>Balance: 10,000.00</span>
+                <span>Max</span>
+              </div>
+              <div class="swap-input">
+                <input type="number" id="usdc-input" value="1000" placeholder="0.00" oninput="calculateYield()">
+                <div class="swap-token">USDC</div>
+              </div>
+            </div>
+
+            <div class="swap-arrow">↓</div>
+
+            <div class="swap-label">You Receive</div>
+            <div class="swap-input-group">
+              <div class="swap-input-header">
+                <span>Estimated</span>
+              </div>
+              <div class="swap-input">
+                <input type="number" id="kes-output" value="129,500" readonly style="color: var(--teal);">
+                <div class="swap-token" style="border-color: var(--gold); color: var(--gold);">KES_TBILL</div>
+              </div>
+            </div>
+
+            <div class="swap-details">
+              <div class="swap-detail">
+                <span>Exchange Rate</span>
+                <span class="swap-detail-value">1 USDC = 129.5 KES</span>
+              </div>
+              <div class="swap-detail">
+                <span>Network Fee</span>
+                <span class="swap-detail-value">0.000012 XRP ($0.0002)</span>
+              </div>
+              <div class="swap-detail">
+                <span>Settlement</span>
+                <span class="swap-detail-value">3-5 seconds</span>
+              </div>
+              <div class="swap-detail">
+                <span>Custody</span>
+                <span class="swap-detail-value">KCB Bank</span>
+              </div>
+            </div>
+
+            <button class="swap-btn" onclick="alert('Connect XRP Wallet to proceed')">
+              Connect XRP Wallet
+            </button>
+          </div>
+
+          <!-- Yield Calculator -->
+          <div class="yield-calc">
+            <div class="yield-header">
+              <span class="yield-icon">📈</span>
+              <span class="yield-title">Projected Return at Maturity</span>
+            </div>
+            <div class="yield-amount" id="yield-amount">$1,092.10</div>
+            <div class="yield-period" id="yield-period">In 364 days (9.21% APR)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features">
+  <div class="section-wrap">
+    <div class="section-eyebrow">Why Tokim</div>
+    <h2>Built for global investors</h2>
+    <p class="section-sub">Combining the security of Kenyan government securities with the speed and accessibility of blockchain technology.</p>
+    
+    <div class="features-grid" style="margin-top: 48px;">
+      <div class="feature-card">
+        <div class="feature-icon">🛡️</div>
+        <div class="feature-title">Sovereign Backing</div>
+        <div class="feature-desc">Every token is backed 1:1 by physical Treasury bills held by CBK-licensed custodians. Not a stablecoin — actual government debt.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">⚡</div>
+        <div class="feature-title">Instant Settlement</div>
+        <div class="feature-desc">XRP Ledger settles in 3-5 seconds vs. T+2 for traditional securities. Trade anytime, anywhere, without intermediaries.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <div class="feature-title">Real-Time Risk</div>
+        <div class="feature-desc">Built-in liquidity monitoring from Tokim Analytics. Circuit breakers protect against market stress. Full transparency on-chain.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🌍</div>
+        <div class="feature-title">Global Access</div>
+        <div class="feature-desc">No Kenyan bank account required. Invest from anywhere with an internet connection. USDC in, KES_TBILL out.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">💧</div>
+        <div class="feature-title">Deep Liquidity</div>
+        <div class="feature-desc">24/7 trading on XRP Ledger DEX. Exit anytime before maturity — no need to wait for CBK rediscounting windows.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🏛️</div>
+        <div class="feature-title">Regulatory Compliant</div>
+        <div class="feature-desc">CMA Sandbox participant. KYC/AML integrated. Designed for institutional and retail compliance from day one.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WAITLIST -->
+<section id="waitlist">
+  <div class="section-wrap">
+    <div class="waitlist-layout">
+      <div class="waitlist-left">
+        <div class="section-eyebrow">Early Access</div>
+        <h2>Join the waitlist</h2>
+        <p>Be among the first to access tokenized Kenyan Treasury bills. Limited spots available for beta testers.</p>
+        
+        <div class="waitlist-stats">
+          <div class="waitlist-stat">
+            <div class="waitlist-stat-value">$0</div>
+            <div class="waitlist-stat-label">Minimum</div>
+          </div>
+          <div class="waitlist-stat">
+            <div class="waitlist-stat-value">9.21%</div>
+            <div class="waitlist-stat-label">Max Yield</div>
+          </div>
+          <div class="waitlist-stat">
+            <div class="waitlist-stat-value">3s</div>
+            <div class="waitlist-stat-label">Settlement</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="waitlist-form">
+        <div class="form-row">
+          <label>Email Address</label>
+          <input type="email" placeholder="you@example.com" />
+        </div>
+        <div class="form-row">
+          <label>Country of Residence</label>
+          <select>
+            <option value="">Select country</option>
+            <option>United States</option>
+            <option>United Kingdom</option>
+            <option>Kenya</option>
+            <option>United Arab Emirates</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <label>Investment Interest</label>
+          <select>
+            <option value="">Select range</option>
+            <option>$100 - $1,000</option>
+            <option>$1,000 - $10,000</option>
+            <option>$10,000 - $100,000</option>
+            <option>$100,000+</option>
+          </select>
+        </div>
+        <button class="form-submit" onclick="alert('Thank you — you have been added to the waitlist.')">
+          Join Waitlist →
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">Tokim <span>Exchange</span></div>
+    <div class="footer-links">
+      <a href="https://tokim-analytics1.vercel.app" target="_blank">Tokim Analytics</a>
+      <a href="#">Documentation</a>
+      <a href="#">Terms</a>
+      <a href="#">Privacy</a>
+    </div>
+    <div class="footer-copy">© 2025 Tokim Exchange · CMA Sandbox Participant · Powered by XRP Ledger</div>
+  </div>
+</footer>
+
+<script>
+  // Demo Calculator Logic
+  const rates = {
+    91: { rate: 7.63, period: '91 days' },
+    182: { rate: 7.80, period: '182 days' },
+    364: { rate: 9.21, period: '364 days' }
+  };
+  
+  let currentTenor = 364;
+  const exchangeRate = 129.5;
+
+  function selectTenor(tenor) {
+    currentTenor = tenor;
+    document.querySelectorAll('.token-tab').forEach(tab => tab.classList.remove('active'));
+    event.target.closest('.token-tab').classList.add('active');
+    calculateYield();
+  }
+
+  function calculateYield() {
+    const usdc = parseFloat(document.getElementById('usdc-input').value) || 0;
+    const kes = usdc * exchangeRate;
+    const rate = rates[currentTenor].rate;
+    const yield = usdc * (1 + rate / 100);
+    
+    document.getElementById('kes-output').value = kes.toLocaleString('en-US', {maximumFractionDigits: 0});
+    document.getElementById('yield-amount').textContent = '$' + yield.toFixed(2);
+    document.getElementById('yield-period').textContent = `In ${rates[currentTenor].period} (${rate}% APR)`;
+  }
+
+  // Initialize
+  calculateYield();
+</script>
+
+</body>
+</html>
